@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       2c7a10ed-b072-493f-bd4b-63df56490d15
+:END:
+#+title: ResponseWriter
+#+date: [2024-01-11 Thu 12:33]
+#+startup: overview
+
+Interface
+https://pkg.go.dev/net/http#ResponseWriter
+* Header()
+* Write()
+* WriteHeader()

@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       d5760d4b-be95-4334-9070-f47081e3a725
+:END:
+#+title: net/http package
+#+date: [2024-01-11 Thu 12:33]
+#+startup: overview
+
+* Types
+** [[id:275c823d-f397-40b9-9063-0ef37f8dcb6f][HandlerFunc]]
+
+* Functions
+** [[id:e4e621a3-1dfa-4d7e-9420-d134cf7c0f3a][HandleFunc]]
+
+* Interfaces
+** [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]]

@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       275c823d-f397-40b9-9063-0ef37f8dcb6f
+:END:
+#+title: HandlerFunc
+#+date: [2024-01-11 Thu 12:31]
+#+startup: overview
+
+Function to process webrequests
+
+#+begin_src go :results output :imports "fmt"
+type HandlerFunc func(ResponseWriter, *Request)
+#+end_src
+
+gets injected the Response Writer [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]]
+- you can then write a Response with the [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]]

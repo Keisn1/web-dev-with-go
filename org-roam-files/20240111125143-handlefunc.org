@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       e4e621a3-1dfa-4d7e-9420-d134cf7c0f3a
+:END:
+#+title: HandleFunc
+#+date: [2024-01-11 Thu 12:51]
+#+startup: overview
+
+Registers handler of type [[id:275c823d-f397-40b9-9063-0ef37f8dcb6f][HandlerFunc]] for the given pattern in the DefaultServeMux
+
+#+begin_src go :results output :imports "fmt"
+// HandleFunc registers the handler function for the given pattern
+// in the DefaultServeMux.
+// The documentation for ServeMux explains how patterns are matched.
+func HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
+	DefaultServeMux.HandleFunc(pattern, handler)
+}
+#+end_src

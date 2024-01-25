@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       c6adfb6a-93da-44d4-a1a3-c5f57c6436de
+:END:
+#+title: Web development with go
+#+date: [2024-01-01 Mon 19:17]
+#+startup: overview
+
+* [[id:a1004c39-4155-45c9-b261-bbbb7ac84ed5][Book]]
+* [[id:3a251f31-d140-45fd-9e91-3529d051f900][Getting started]]
+** [[id:d5760d4b-be95-4334-9070-f47081e3a725][net/http package]]
+** [[id:42388cfa-a807-4fdc-89c3-7d3c463d0d64][Semantic versioning]]

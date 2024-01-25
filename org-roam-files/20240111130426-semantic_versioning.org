@@ -1,0 +1,15 @@
+:PROPERTIES:
+:ID:       42388cfa-a807-4fdc-89c3-7d3c463d0d64
+:END:
+#+title: Semantic versioning
+#+date: [2024-01-11 Thu 13:04]
+#+startup: overview
+
+SemVer
+1.23.25
+* major version
+- introduce breaking changes
+* minor version
+- adding functionality that is backwards compatible
+* patch version
+- bug fixes

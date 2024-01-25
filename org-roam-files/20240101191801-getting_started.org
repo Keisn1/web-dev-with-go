@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       3a251f31-d140-45fd-9e91-3529d051f900
+:END:
+#+title: Getting started
+#+date: [2024-01-01 Mon 19:18]
+#+startup: overview

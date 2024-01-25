@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       a1004c39-4155-45c9-b261-bbbb7ac84ed5
+:END:
+#+title: Book
+#+date: [2024-01-01 Mon 19:17]
+#+startup: overview
+
+https://www.usegolang.com/sample/#cid1
