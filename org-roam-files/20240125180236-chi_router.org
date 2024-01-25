@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       6ee723a7-6c8b-47f5-9448-7dc3557ffa58
+:END:
+#+title: Chi router
+#+date: [2024-01-25 Thu 18:02]
+#+startup: overview
+
+1. Make using URL parameters easier
+2. Enable HTTP method-based routing
+3. Make mounting subrouters a bit easier if we need to do that
+4. Provide some nice middleware
