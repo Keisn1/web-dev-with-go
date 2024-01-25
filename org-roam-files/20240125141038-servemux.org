@@ -5,7 +5,18 @@
 #+date: [2024-01-25 Thu 14:10]
 #+startup: overview
 
-http request Multiplexer
+https://devdocs.io/go/net/http/index#ServeMux
+- http request Multiplexer
 
-- Implements [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]] interface
-https://devdocs.io/go/net/http/index#ServeMux.ServeHTTP
+* methods
+- [[id:13c687cc-5e59-40cc-87be-cc587baf4f64][ServeHTTP]]
+  - https://devdocs.io/go/net/http/index#ServeMux.ServeHTTP
+  - therefore Implements [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]] interface
+- (*ServeMux) HandleFunc
+  - registter the handler function for the given pattern
+  - same signature as [[id:e4e621a3-1dfa-4d7e-9420-d134cf7c0f3a][HandleFunc]]
+  - https://devdocs.io/go/net/http/index#ServeMux.HandleFunc
+- (*ServeMux) Handle
+  - regirster the handler
+  - same signature as [[id:def2a70c-1368-4c1a-b2be-da6dd544900d][Handle]]
+  - https://devdocs.io/go/net/http/index#ServeMux.Handle

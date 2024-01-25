@@ -5,11 +5,34 @@
 #+date: [2024-01-11 Thu 12:33]
 #+startup: overview
 
+* Interface
+** [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]] (what is expected by [[id:60182ce8-59c4-4a3e-8754-bf2d84a2f373][ListenAndServe]], DefaultMux otherwise)
+#+begin_src go :results output :imports "fmt"
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+#+end_src
+** [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]]
+
 * Types
-** [[id:275c823d-f397-40b9-9063-0ef37f8dcb6f][HandlerFunc]]
+** [[id:da188abf-e46f-430a-8fc9-eab4db9658e4][ServeMux]] (ServeMux is an HTTP request multiplexer)
+
+** [[id:275c823d-f397-40b9-9063-0ef37f8dcb6f][HandlerFunc]] (implements Handler via the FunctionType [[id:275c823d-f397-40b9-9063-0ef37f8dcb6f][HandlerFunc]])
+#+begin_src go :results output :imports "fmt"
+type HandlerFunc func(ResponseWriter, *Request)
+
+func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
+#+end_src
 
 * Functions
-** [[id:e4e621a3-1dfa-4d7e-9420-d134cf7c0f3a][HandleFunc]]
-
-* Interfaces
-** [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]]
+** [[id:e4e621a3-1dfa-4d7e-9420-d134cf7c0f3a][HandleFunc]] (registers a func "handler" with [[id:13c687cc-5e59-40cc-87be-cc587baf4f64][ServeHTTP]] signature)
+- to register functions  that look like a [[id:275c823d-f397-40b9-9063-0ef37f8dcb6f][HandlerFunc]]
+#+begin_src go :results output :imports "fmt"
+func HandleFunc(pattern string, handler func(ResponseWriter, *Request))
+#+end_src
+** [[id:def2a70c-1368-4c1a-b2be-da6dd544900d][Handle]] (register a [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]] for the given DefaultServeMux)
+- used to register anything that implements the http.Handler interface
+#+begin_src go :results output :imports "fmt"
+func Handle(pattern string, handler Handler)
+#+end_src
+** [[id:60182ce8-59c4-4a3e-8754-bf2d84a2f373][ListenAndServe]]  (listens on TCP network and calls [[id:13c687cc-5e59-40cc-87be-cc587baf4f64][ServeHTTP]] of [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]])

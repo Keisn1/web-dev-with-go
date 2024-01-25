@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       def2a70c-1368-4c1a-b2be-da6dd544900d
+:END:
+#+title: Handle
+#+date: [2024-01-25 Thu 14:34]
+#+startup: overview
+
+https://devdocs.io/go/net/http/index#Handle
+
+#+begin_src go :results output :imports "fmt"
+func Handle(pattern string, handler Handler)
+#+end_src
+
+- registers the [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]] for the given pattern in the DefaultServeMux

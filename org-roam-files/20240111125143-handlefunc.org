@@ -5,6 +5,7 @@
 #+date: [2024-01-11 Thu 12:51]
 #+startup: overview
 
+https://devdocs.io/go/net/http/index#HandleFunc
 Registers handler of type [[id:275c823d-f397-40b9-9063-0ef37f8dcb6f][HandlerFunc]] for the given pattern in the DefaultServeMux
 
 #+begin_src go :results output :imports "fmt"

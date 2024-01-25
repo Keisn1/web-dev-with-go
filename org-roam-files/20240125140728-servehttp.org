@@ -11,4 +11,6 @@
 ServeHTTP(ResponseWriter, *Request)
 #+end_src
 
-Example Implementations
+Example Implementations in:
+[[id:da188abf-e46f-430a-8fc9-eab4db9658e4][ServeMux]]
+[[id:275c823d-f397-40b9-9063-0ef37f8dcb6f][HandlerFunc]]

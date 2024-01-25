@@ -14,6 +14,24 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 #+end_src
 
 - adapter to allow use of ordinary functions as HTTP handlers
+  #+begin_src go :results output :imports "fmt"
+func main() {
+    // https://devdocs.io/go/net/http/index#HandleFunc
+    // HandleFunc registers the handler function for the givefunc main() {
+    var router http.HandlerFunc
+    router = pathHandler
+    fmt.Println("Starting the server on: 3000...")
+    http.ListenAndServe(":3000", router)
+}
+
+func pathHandler(w http.ResponseWriter, r *http.Request) {
+	...
+	}
+  #+end_src
+  - more simple
+    #+begin_src go :results output :imports "fmt"
+http.ServeAndListen(":3000", http.HandlerFunc(pathHandler)) // type conversion
+    #+end_src
 
 - implements [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]] interface
   - has [[id:13c687cc-5e59-40cc-87be-cc587baf4f64][ServeHTTP]]

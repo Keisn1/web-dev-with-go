@@ -6,7 +6,7 @@
 #+startup: overview
 
 https://devdocs.io/go/net/http/index#Handler
-
+- interface
 - Handler can serve Http ([[id:13c687cc-5e59-40cc-87be-cc587baf4f64][ServeHTTP]])
 
 #+begin_src go :results output :imports "fmt"
