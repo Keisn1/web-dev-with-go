@@ -1,0 +1,14 @@
+:PROPERTIES:
+:ID:       13c687cc-5e59-40cc-87be-cc587baf4f64
+:END:
+#+title: ServeHTTP
+#+date: [2024-01-25 Thu 14:07]
+#+startup: overview
+
+- function to implement if you want something to be a [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]]
+
+#+begin_src go :results output :imports "fmt"
+ServeHTTP(ResponseWriter, *Request)
+#+end_src
+
+Example Implementations

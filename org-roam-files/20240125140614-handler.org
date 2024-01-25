@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       f1d9cd03-62d6-4054-b85b-b78fdf1ff243
+:END:
+#+title: Handler
+#+date: [2024-01-25 Thu 14:06]
+#+startup: overview
+
+https://devdocs.io/go/net/http/index#Handler
+
+- Handler can serve Http ([[id:13c687cc-5e59-40cc-87be-cc587baf4f64][ServeHTTP]])
+
+#+begin_src go :results output :imports "fmt"
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+#+end_src
+

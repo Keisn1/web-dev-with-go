@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       da188abf-e46f-430a-8fc9-eab4db9658e4
+:END:
+#+title: ServeMux
+#+date: [2024-01-25 Thu 14:10]
+#+startup: overview
+
+http request Multiplexer
+
+- Implements [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]] interface
+https://devdocs.io/go/net/http/index#ServeMux.ServeHTTP

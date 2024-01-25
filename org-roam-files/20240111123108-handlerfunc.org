@@ -9,7 +9,16 @@ Function to process webrequests
 
 #+begin_src go :results output :imports "fmt"
 type HandlerFunc func(ResponseWriter, *Request)
+
+func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request)
 #+end_src
 
-gets injected the Response Writer [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]]
+- adapter to allow use of ordinary functions as HTTP handlers
+
+- implements [[id:f1d9cd03-62d6-4054-b85b-b78fdf1ff243][Handler]] interface
+  - has [[id:13c687cc-5e59-40cc-87be-cc587baf4f64][ServeHTTP]]
+  - [[id:13c687cc-5e59-40cc-87be-cc587baf4f64][ServeHTTP]] calls f(w,r)
+  - https://devdocs.io/go/net/http/index#HandlerFunc.ServeHTTP
+
+- gets injected the Response Writer [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]]
 - you can then write a Response with the [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]]
