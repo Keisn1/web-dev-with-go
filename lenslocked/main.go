@@ -4,16 +4,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"path/filepath"
 
 	chi "github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/keisn1/lenslocked/controllers"
+	"github.com/keisn1/lenslocked/templates"
 	"github.com/keisn1/lenslocked/views"
 	// "github.com/go-chi/chi/v5/middleware"
 )
 
 func main() {
+	fs := templates.FS
+
 	r := chi.NewRouter()
 	// https://devdocs.io/go/net/http/index#HandleFunc
 	// HandleFunc registers the handler function for the given pattern in the
@@ -24,17 +26,16 @@ func main() {
 	// ListenAndServe listens on the TCP network address addr and then calls Serve
 	// with handler to handle requests on incoming connections. Accepted connections
 	// are configured to enable TCP keep-alives.
-
-	homeTpl := views.Must(views.Parse(filepath.Join("templates", "home.html")))
+	homeTpl := views.Must(views.ParseFS(fs, "home.gohtml", "tailwind.gohtml"))
 	r.Get("/", controllers.StaticHandler(homeTpl))
-	contactTpl := views.Must(views.Parse(filepath.Join("templates", "contact.html")))
+
+	contactTpl := views.Must(views.ParseFS(fs, "contact.gohtml", "tailwind.gohtml"))
 	r.Route("/contact", func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.Get("/", controllers.StaticHandler(contactTpl))
 	})
 
-	faqTpl := views.Must(views.Parse(filepath.Join("templates", "faq.html")))
-	r.Get("/faq", controllers.StaticHandler(faqTpl))
+	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(fs, "faq.gohtml", "tailwind.gohtml"))))
 
 	r.Get("/gallery/{galleryID}", galleryHandler)
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {

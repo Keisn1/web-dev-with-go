@@ -1,6 +1,7 @@
 package views
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
 	"log"
@@ -12,6 +13,14 @@ func Must(t Template, err error) Template {
 		panic(err)
 	}
 	return t
+}
+
+func ParseFS(fs embed.FS, pattern ...string) (Template, error) {
+	tpl, err := template.ParseFS(fs, pattern...)
+	if err != nil {
+		return Template{}, fmt.Errorf("parsing template: %w", err)
+	}
+	return Template{hmtlTpl: tpl}, nil
 }
 
 func Parse(filepath string) (Template, error) {
