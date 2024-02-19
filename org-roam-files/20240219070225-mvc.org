@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       a0836a4a-1594-4c42-9af9-fff1d25619e9
+:END:
+#+title: MVC
+#+date: [2024-02-19 Mon 07:02]
+#+startup: overview
+
+* [[id:175af457-7106-4779-a850-0f79085b330f][Model]]
+* [[id:3bc45ba6-39c3-4dd5-80e8-876428ef1521][View]]
+* [[id:76131df5-9487-4a2f-801b-cc87459bd0c6][Controller]]
+* [[id:026803b5-1afa-494c-8d06-d32914d5c2c6][Walking through a web request with MVC]]

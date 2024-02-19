@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
 
 	chi "github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/keisn1/lenslocked/controllers"
+	"github.com/keisn1/lenslocked/views"
 	// "github.com/go-chi/chi/v5/middleware"
 )
 
@@ -28,6 +29,7 @@ func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	r := chi.NewRouter()
 	// https://devdocs.io/go/net/http/index#HandleFunc
 	// HandleFunc registers the handler function for the given pattern in the
 	// DefaultServeMux. The documentation for ServeMux explains how patterns are
@@ -38,14 +40,27 @@ func main() {
 	// with handler to handle requests on incoming connections. Accepted connections
 	// are configured to enable TCP keep-alives.
 
-	r := chi.NewRouter()
-	// r.Use(middleware.Logger)
-	r.Get("/", homeHandler)
+	homeTpl, err := views.Parse(filepath.Join("templates", "home.html"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/", controllers.StaticHandler(homeTpl))
+
+	contactTpl, err := views.Parse(filepath.Join("templates", "contact.html"))
+	if err != nil {
+		panic(err)
+	}
 	r.Route("/contact", func(r chi.Router) {
 		r.Use(middleware.Logger)
-		r.Get("/", contactHandler)
+		r.Get("/", controllers.StaticHandler(contactTpl))
 	})
-	r.Get("/faq", faqHandler)
+
+	faqTpl, err := views.Parse(filepath.Join("templates", "faq.html"))
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/faq", controllers.StaticHandler(faqTpl))
+
 	r.Get("/gallery/{galleryID}", galleryHandler)
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not foundicilious", http.StatusNotFound)
@@ -55,36 +70,12 @@ func main() {
 }
 
 func executeTemplate(w http.ResponseWriter, filepath string) {
-	w.Header().Set("Content-type", "text/html; charset=utf-8")
-	tpl, err := template.ParseFiles(filepath)
+	tpl, err := views.Parse(filepath)
 	if err != nil {
 		log.Printf("parsing template: %v", err)
-		http.Error(w, "There was an error parsing the template.", http.StatusInternalServerError)
 		return
 	}
-
-	err = tpl.Execute(w, nil)
-	if err != nil {
-		log.Printf("executing template: %v", err)
-		http.Error(w, "There was an error executing the template.", http.StatusInternalServerError)
-		return
-	}
-}
-
-func contactHandler(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "contact.html")
-	executeTemplate(w, tplPath)
-}
-
-func faqHandler(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "faq.html")
-	executeTemplate(w, tplPath)
-
-}
-
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	tplPath := filepath.Join("templates", "home.html")
-	executeTemplate(w, tplPath)
+	tpl.Execute(w, nil)
 }
 
 func galleryHandler(w http.ResponseWriter, r *http.Request) {

@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       175af457-7106-4779-a850-0f79085b330f
+:END:
+#+title: Model
+#+date: [2024-02-19 Mon 07:02]
+#+startup: overview
+
+* Role
+- data
+- rules for data
+- logic for data
+
+* In practice
+- database code
+- not only:
+  - interacting with files
+  - data from third party API
+* Limitations
+- not limited to fetching data
+- validating, normalizing data

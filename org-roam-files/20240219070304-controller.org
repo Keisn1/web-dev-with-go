@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       76131df5-9487-4a2f-801b-cc87459bd0c6
+:END:
+#+title: Controller
+#+date: [2024-02-19 Mon 07:03]
+#+startup: overview
+
+* Purpose
+- logic that connects everything together
+- air traffic controllers
+  - not flying planes but coordinate with pilots to tell them which runway to land on

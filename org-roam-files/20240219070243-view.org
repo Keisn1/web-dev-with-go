@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       3bc45ba6-39c3-4dd5-80e8-876428ef1521
+:END:
+#+title: View
+#+date: [2024-02-19 Mon 07:02]
+#+startup: overview
+
+* Purpose
+- rendering data
+  - also returning JSON
+- keep logic as minimal as possible
+- good for logic that is tied to html itself
+- not good for logic that does something with the data

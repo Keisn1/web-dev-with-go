@@ -1,0 +1,21 @@
+:PROPERTIES:
+:ID:       026803b5-1afa-494c-8d06-d32914d5c2c6
+:END:
+#+title: Walking through a web request with MVC
+#+date: [2024-02-19 Mon 07:10]
+#+startup: overview
+
+1. A user submits an update to their contact information
+2. Router routes request to the UserController
+
+3. The USerController uses the USerStore to update the user's contact info
+
+4. UserStore returns the updated data
+
+5. The UserController uses the ShowUser view to genereate HTML
+
+6. The ShowUser view writes HTML and responds to the request
+
+[[file:files/MVC-1.png]]
+[[file:files/MVC-2.png]]
+[[file:files/MVC-3.png]]
