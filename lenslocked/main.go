@@ -13,21 +13,6 @@ import (
 	// "github.com/go-chi/chi/v5/middleware"
 )
 
-type Router struct{}
-
-func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Path {
-	case "/":
-		homeHandler(w, r)
-	case "/contact":
-		contactHandler(w, r)
-	case "/faq":
-		faqHandler(w, r)
-	default:
-		http.Error(w, "Page not found", http.StatusNotFound)
-	}
-}
-
 func main() {
 	r := chi.NewRouter()
 	// https://devdocs.io/go/net/http/index#HandleFunc
@@ -40,25 +25,15 @@ func main() {
 	// with handler to handle requests on incoming connections. Accepted connections
 	// are configured to enable TCP keep-alives.
 
-	homeTpl, err := views.Parse(filepath.Join("templates", "home.html"))
-	if err != nil {
-		panic(err)
-	}
+	homeTpl := views.Must(views.Parse(filepath.Join("templates", "home.html")))
 	r.Get("/", controllers.StaticHandler(homeTpl))
-
-	contactTpl, err := views.Parse(filepath.Join("templates", "contact.html"))
-	if err != nil {
-		panic(err)
-	}
+	contactTpl := views.Must(views.Parse(filepath.Join("templates", "contact.html")))
 	r.Route("/contact", func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.Get("/", controllers.StaticHandler(contactTpl))
 	})
 
-	faqTpl, err := views.Parse(filepath.Join("templates", "faq.html"))
-	if err != nil {
-		panic(err)
-	}
+	faqTpl := views.Must(views.Parse(filepath.Join("templates", "faq.html")))
 	r.Get("/faq", controllers.StaticHandler(faqTpl))
 
 	r.Get("/gallery/{galleryID}", galleryHandler)
