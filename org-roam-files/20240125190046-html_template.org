@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       3dcaa8cd-d01f-404a-9294-e8babce6f049
+:END:
+#+title: html/template
+#+date: [2024-01-25 Thu 19:00]
+#+startup: overview
+
+- will prevent [[id:ff1d0c2e-ff37-44fb-a6a6-43e15098bd8f][Cross Site Scripting (XSS)]] due to encoding
+- [[id:c1be73d3-8b62-43f9-86ce-87dc86d5811f][template.HTML type]] to change encoding behavior
+- can encode data based on the context
+  - see cmd/exp.go example
+    - can add quotation marks, encoding is different

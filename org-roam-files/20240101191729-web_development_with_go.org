@@ -7,5 +7,9 @@
 
 * [[id:a1004c39-4155-45c9-b261-bbbb7ac84ed5][Book]]
 * [[id:3a251f31-d140-45fd-9e91-3529d051f900][Getting started]]
-** [[id:d5760d4b-be95-4334-9070-f47081e3a725][net/http package]]
 ** [[id:42388cfa-a807-4fdc-89c3-7d3c463d0d64][Semantic versioning]]
+* [[id:d5760d4b-be95-4334-9070-f47081e3a725][net/http package]]
+* [[id:6ee723a7-6c8b-47f5-9448-7dc3557ffa58][Chi router]]
+* [[id:dde5f6e6-12db-4f4e-9446-143f4714dc84][Templating]]
+* [[id:ff1d0c2e-ff37-44fb-a6a6-43e15098bd8f][Cross Site Scripting (XSS)]]
+* [[id:08cb565e-b27a-4b0c-8329-2276844b38c9][Code organization]]

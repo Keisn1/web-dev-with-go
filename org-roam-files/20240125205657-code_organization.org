@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       08cb565e-b27a-4b0c-8329-2276844b38c9
+:END:
+#+title: Code organization
+#+date: [2024-01-25 Thu 20:56]
+#+startup: overview
+
+* Flat structure
+* MVC
+* Dependency based structure
+* Domain driven design
+* onion architecture

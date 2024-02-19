@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       53d9779d-674e-45cd-8108-246e934cc856
+:END:
+#+title: text/template
+#+date: [2024-01-25 Thu 19:00]
+#+startup: overview

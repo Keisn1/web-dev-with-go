@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       c1be73d3-8b62-43f9-86ce-87dc86d5811f
+:END:
+#+title: template.HTML type
+#+date: [2024-01-25 Thu 20:02]
+#+startup: overview
+
+template library will know that we do not encode any data awith that type
+#+begin_src go :results output :imports "fmt"
+type User struct {
+	Bio template.HTML
+}
+
+user := User{Bio: `<script>alert("Haha, you have been h4x0r3d!");</script>`, Name: "Kay", Age: 12}
+
+t, err := template.New("NewTemplate").Parse(string(content))
+err = t.Execute(os.Stdout, user)
+#+end_src

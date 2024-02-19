@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       dde5f6e6-12db-4f4e-9446-143f4714dc84
+:END:
+#+title: Templating
+#+date: [2024-01-25 Thu 19:51]
+#+startup: overview

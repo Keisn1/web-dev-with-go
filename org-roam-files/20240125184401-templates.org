@@ -1,0 +1,11 @@
+:PROPERTIES:
+:ID:       e4e431c3-7493-426a-979c-b10a608bc9fa
+:END:
+#+title: templates
+#+date: [2024-01-25 Thu 18:44]
+#+startup: overview
+
+* [[id:53d9779d-674e-45cd-8108-246e934cc856][text/template]]
+- doesn't add HTML specific logic
+* [[id:3dcaa8cd-d01f-404a-9294-e8babce6f049][html/template]]
+- designed for creating HTML

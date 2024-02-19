@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       ff1d0c2e-ff37-44fb-a6a6-43e15098bd8f
+:END:
+#+title: Cross Site Scripting (XSS)
+#+date: [2024-01-25 Thu 19:53]
+#+startup: overview
+
+XSS
+- putting in html-code as input
+- only in [[id:3dcaa8cd-d01f-404a-9294-e8babce6f049][html/template]] not in [[id:53d9779d-674e-45cd-8108-246e934cc856][text/template]]
+  
+#+begin_src go :results output :imports "fmt" 
+func homeHandler(w. ResponseWriter, r *Request) {
+    bio := `I have been a developer for 256 years`
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprint(w, "<h1>Welcome to my awesome site!</h1><p>User's bio: " + bio + "</p>")
+}
+#+end_src
+
+most html template libraries deal with this by encoding any special characters into HTML character entities
