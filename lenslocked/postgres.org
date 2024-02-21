@@ -47,8 +47,8 @@
 #+begin_src sql
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
-  name TEXT,
-  email TEXT UNIQUE NOT NULL
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL
 );
 #+end_src
 
@@ -66,36 +66,30 @@ CREATE TABLE IF NOT EXISTS users (
 |----------------------------------------------------+---------+-----------+----------+-----------------------------------|
 | Column                                             | Type    | Collation | Nullable | Default                           |
 | id                                                 | integer |           | not null | nextval('users_id_seq'::regclass) |
-| age                                                | integer |           |          |                                   |
-| first_name                                         | text    |           |          |                                   |
-| last_name                                          | text    |           |          |                                   |
 | email                                              | text    |           | not null |                                   |
+| password_hash                                      | text    |           | not null |                                   |
 | Indexes:                                           |         |           |          |                                   |
 | "users_pkey" PRIMARY KEY, btree (id)               |         |           |          |                                   |
 | "users_email_key" UNIQUE CONSTRAINT, btree (email) |         |           |          |                                   |
 
 ** Insert into User Table
+*** Insert User without Return value
 #+begin_src sql
-INSERT INTO users  (age, first_name, last_name, email) VALUES
-       (22, 'John', 'Smith', 'john@smith.com'),
-       (30, 'John', 'Calhoun', 'john@calhoun.io.com')
-       ;
+INSERT INTO users  (email, password_hash) VALUES
+       ('kay@fe.com', '123abcHashuasf8o8y2kj');
 #+end_src
-
-#+RESULTS:
-| INSERT 0 2 |
-|------------|
 *** Insert with Return value
 #+begin_src sql
-INSERT INTO users  (age, first_name, last_name, email) VALUES
-       (35, 'Kay', 'Freyer', 'kay.freyer@buxtehude.de'),
-       (240, 'Notre', 'Dame', 'ma@dame.com')
-       ;
+INSERT INTO users  (name, email) VALUES
+       ('Susi', 'susi@email.com')
+       RETURNING id;
 #+end_src
 
 #+RESULTS:
-| INSERT 0 2 |
+| id         |
 |------------|
+| 2          |
+| INSERT 0 1 |
 
 ** Select users
 *** all users
@@ -103,9 +97,10 @@ INSERT INTO users  (age, first_name, last_name, email) VALUES
 SELECT * FROM users;
 #+end_src
 #+RESULTS:
-| id | name | email         |
-|----+------+---------------|
-|  1 | kay  | kay@email.com |
+| id | email             | password_hash                                                |
+|----+-------------------+--------------------------------------------------------------|
+|  2 | kay.freyr@adf.com | $2a$10$iLr5aX1MBgICr3EG6EJsTuOlAES6Dxo6emg5LgXmLY9m.c5jRyK0C |
+|  3 | kay@email         | $2a$10$SXkpCYVFhCkUO.tycSfh5OBuXF9mgrC5XNvCo3j.eaT67MyUqQK3K |
 *** by email
 #+begin_src sql
 SELECT * FROM users WHERE email='john@calhoun.io.com';
@@ -131,6 +126,11 @@ UPDATE users
 #+begin_src sql
 DELETE FROM users;
 #+end_src
+
+#+RESULTS:
+| DELETE 1 |
+|----------|
+
 *** by id
 #+begin_src sql
 DELETE FROM users
@@ -157,4 +157,24 @@ CREATE TABLE IF NOT EXISTS orders (
   user_id INT NOT NULL,
   amount INT,
   description TEXT);
+#+end_src
+** Select Orders
+*** all
+#+begin_src sql
+SELECT * FROM orders;
+#+end_src
+
+#+RESULTS:
+| id | user_id | amount | description   |
+|----+---------+--------+---------------|
+|  1 |       4 |    100 | Fake order @1 |
+|  2 |       4 |    200 | Fake order @2 |
+|  3 |       4 |    300 | Fake order @3 |
+|  4 |       4 |    400 | Fake order @4 |
+|  5 |       4 |    500 | Fake order @5 |
+*** by userId
+#+begin_src sql
+SELECT id, amount, description
+FROM orders
+WHERE user_id=4;
 #+end_src

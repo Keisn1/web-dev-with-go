@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       0c74fd93-6f5c-4d2f-b024-76e005a67366
+:END:
+#+title: Hashing functions
+#+date: [2024-02-21 Wed 17:45]
+#+startup: overview
+
+* [[id:242fc5d6-287b-4841-ad9b-cdfe60a60d7d][bcrypt]]
+* [[id:526e5aa9-67d7-408b-a69d-023a97699e72][HMAC]]

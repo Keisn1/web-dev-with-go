@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       242fc5d6-287b-4841-ad9b-cdfe60a60d7d
+:END:
+#+title: bcrypt
+#+date: [2024-02-21 Wed 17:45]
+#+startup: overview
+
+- explicitely for hashing passwords

@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       526e5aa9-67d7-408b-a69d-023a97699e72
+:END:
+#+title: HMAC
+#+date: [2024-02-21 Wed 17:45]
+#+startup: overview
+
+- can be used for hashing session tokens for example

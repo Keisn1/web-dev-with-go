@@ -8,6 +8,7 @@ import (
 	chi "github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/keisn1/lenslocked/controllers"
+	"github.com/keisn1/lenslocked/models"
 	"github.com/keisn1/lenslocked/templates"
 	"github.com/keisn1/lenslocked/views"
 	// "github.com/go-chi/chi/v5/middleware"
@@ -16,15 +17,6 @@ import (
 func main() {
 
 	r := chi.NewRouter()
-	// https://devdocs.io/go/net/http/index#HandleFunc
-	// HandleFunc registers the handler function for the given pattern in the
-	// DefaultServeMux. The documentation for ServeMux explains how patterns are
-	// matched.
-	// http.HandleFunc("/", pathHandler)
-
-	// ListenAndServe listens on the TCP network address addr and then calls Serve
-	// with handler to handle requests on incoming connections. Accepted connections
-	// are configured to enable TCP keep-alives.
 	homeTpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml"))
 	r.Get("/", controllers.StaticHandler(homeTpl))
 
@@ -34,12 +26,22 @@ func main() {
 		r.Get("/", controllers.StaticHandler(contactTpl))
 	})
 
+	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
+
+	db, err := models.Open(models.DefaultPostgresConfig())
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
 	var usersC controllers.Users
+	usersC.UserService = &models.UserService{DB: db}
 	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
+	usersC.Templates.SignIn = views.Must(views.ParseFS(templates.FS, "signin.gohtml", "tailwind.gohtml"))
 	r.Get("/signup", usersC.New)
 	r.Post("/signup", usersC.Create)
-
-	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
+	r.Get("/signin", usersC.SignIn)
+	r.Post("/signin", usersC.ProcessSignIn)
 
 	r.Get("/gallery/{galleryID}", galleryHandler)
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
