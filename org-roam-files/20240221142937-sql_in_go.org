@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       ae7bb407-efdb-464c-acfd-9f2a41507c6a
+:END:
+#+title: SQL in GO
+#+date: [2024-02-21 Wed 14:29]
+#+startup: overview
+
+[[id:a33dd10c-c547-4d78-8658-faf53300c87e][Go sql stdlib package]]

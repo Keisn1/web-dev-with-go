@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       9d56889b-36e8-4c25-9f7a-68a4cb0a4b6b
+:END:
+#+title: Postgres driver for go
+#+date: [2024-02-21 Wed 14:32]
+#+startup: overview
+
+https://gosamples.dev/list-postgresql-drivers/
+
+- [[id:ae0bdfd6-8803-4757-9e08-0a49f3d75a69][pgx]] (https://github.com/jackc/pgx)
+- [[id:cd909ea3-c8ec-4a11-836d-9c6258c70855][PQ]] (https://pkg.go.dev/github.com/lib/pq)
+  - they recommend using pgx

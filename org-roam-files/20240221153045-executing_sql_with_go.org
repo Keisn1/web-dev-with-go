@@ -1,0 +1,20 @@
+:PROPERTIES:
+:ID:       f26bc92f-8ef9-44ec-ae03-6b20bbc13cee
+:END:
+#+title: Executing SQL with Go
+#+date: [2024-02-21 Wed 15:30]
+#+startup: overview
+
+[[id:532d528d-babb-4986-b017-b6dd4435e467][Go sql query]]
+[[id:d12a359a-52df-4395-8ca0-b832c6f306cc][Go sql QueryRow]]
+[[id:ceb00050-4637-414f-b41a-ddb3b87073fb][Go Exec -]]
+
+* Query and QueryRow
+- query for records in DB
+- query for multiple records expected
+-
+
+* Inserting values dynamically
+#+begin_src go :results output :imports "fmt"
+VALUES($1, $2)
+#+end_src

@@ -1,28 +1,84 @@
 package main
 
 import (
-	"html/template"
-	"log"
-	"os"
+	"database/sql"
+	"fmt"
+
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-type User struct {
-	Name string
-	Age  int
-	Bio  string
+type PostgresConfig struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+	Database string
+	SSLMode  string
+}
+
+func (cfg PostgresConfig) String() string {
+	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		cfg.Host,
+		cfg.Port,
+		cfg.User,
+		cfg.Password,
+		cfg.Database,
+		cfg.SSLMode,
+	)
 }
 
 func main() {
-	content, err := os.ReadFile("./helloGo.html")
-	if err != nil {
-		log.Fatalln("Problem loading file: ", err)
+	cfg := PostgresConfig{
+		Host:     "localhost",
+		Port:     "4321",
+		User:     "baloo",
+		Password: "junglebook",
+		Database: "lenslocked",
+		SSLMode:  "disable",
 	}
 
-	user := User{Bio: `<script>alert("Haha, you have been h4x0r3d!");</script>`, Name: "Kay", Age: 12}
-
-	t, err := template.New("NewTemplate").Parse(string(content))
-	err = t.Execute(os.Stdout, user)
+	db, err := sql.Open("pgx", cfg.String())
 	if err != nil {
-		log.Fatalln("Problem Executing template: ", err)
+		panic(err)
 	}
+	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Connected!")
+
+	_, err = db.Exec(`
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  name TEXT,
+  email TEXT UNIQUE NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS orders (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  amount INT,
+  description TEXT);`)
+
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Tables created")
+
+	name := "kay"
+	email := "kay@email.com"
+	_, err = db.Exec(`
+INSERT INTO users (name, email) VALUES
+       ($1, $2);
+`,
+		name, email)
+
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("User created")
+
 }

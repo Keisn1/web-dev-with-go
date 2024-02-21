@@ -35,7 +35,7 @@ type Template struct {
 	hmtlTpl *template.Template
 }
 
-func (t *Template) Execute(w http.ResponseWriter, data any) {
+func (t Template) Execute(w http.ResponseWriter, data any) {
 	w.Header().Set("Content-type", "text/html; charset=utf-8")
 	err := t.hmtlTpl.Execute(w, data)
 	if err != nil {

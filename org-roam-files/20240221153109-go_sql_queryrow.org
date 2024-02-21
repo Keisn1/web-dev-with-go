@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       d12a359a-52df-4395-8ca0-b832c6f306cc
+:END:
+#+title: Go sql QueryRow
+#+date: [2024-02-21 Wed 15:31]
+#+startup: overview
+
+returns sql.ErrNoRows if nothing found

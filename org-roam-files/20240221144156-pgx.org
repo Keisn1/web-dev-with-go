@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       ae0bdfd6-8803-4757-9e08-0a49f3d75a69
+:END:
+#+title: pgx
+#+date: [2024-02-21 Wed 14:41]
+#+startup: overview
+
+https://github.com/jackc/pgx

@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       cd909ea3-c8ec-4a11-836d-9c6258c70855
+:END:
+#+title: PQ
+#+date: [2024-02-21 Wed 14:41]
+#+startup: overview
+
+https://pkg.go.dev/github.com/lib/pq

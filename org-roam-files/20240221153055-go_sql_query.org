@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       532d528d-babb-4986-b017-b6dd4435e467
+:END:
+#+title: Go sql query
+#+date: [2024-02-21 Wed 15:30]
+#+startup: overview
+
+- return empty set if nothing found

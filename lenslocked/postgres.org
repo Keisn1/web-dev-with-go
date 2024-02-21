@@ -1,0 +1,160 @@
+:PROPERTIES:
+:header-args:sql: :engine postgresql :dbuser baloo :dbpassword junglebook :database lenslocked :dbport 4321 :dbhost localhost
+:END:
+#+title: Postgres Queries
+
+* List db users
+#+begin_src sql
+\du
+#+end_src
+
+#+RESULTS:
+| List of roles |                                                            |
+|---------------+------------------------------------------------------------|
+| Role name     | Attributes                                                 |
+| baloo         | Superuser, Create role, Create DB, Replication, Bypass RLS |
+
+* List dbs
+#+begin_src sql
+\l
+#+end_src
+
+#+RESULTS:
+| List of databases |       |          |                 |            |            |            |           |                   |
+|-------------------+-------+----------+-----------------+------------+------------+------------+-----------+-------------------|
+| Name              | Owner | Encoding | Locale Provider | Collate    | Ctype      | ICU Locale | ICU Rules | Access privileges |
+| lenslocked        | baloo | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           |                   |
+| postgres          | baloo | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           |                   |
+| template0         | baloo | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | =c/baloo          |
+| baloo=CTc/baloo   |       |          |                 |            |            |            |           |                   |
+| template1         | baloo | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | =c/baloo          |
+| baloo=CTc/baloo   |       |          |                 |            |            |            |           |                   |
+
+* List tables
+#+begin_src sql
+\dt
+#+end_src
+
+#+RESULTS:
+| List of relations |        |       |       |
+|-------------------+--------+-------+-------|
+| Schema            | Name   | Type  | Owner |
+| public            | orders | table | baloo |
+| public            | users  | table | baloo |
+
+* Users table
+** Create User table
+#+begin_src sql
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  name TEXT,
+  email TEXT UNIQUE NOT NULL
+);
+#+end_src
+
+#+RESULTS:
+| CREATE TABLE |
+|--------------|
+
+** Show columns User table
+#+begin_src sql
+\d users
+#+end_src
+
+#+RESULTS:
+| Table "public.users"                               |         |           |          |                                   |
+|----------------------------------------------------+---------+-----------+----------+-----------------------------------|
+| Column                                             | Type    | Collation | Nullable | Default                           |
+| id                                                 | integer |           | not null | nextval('users_id_seq'::regclass) |
+| age                                                | integer |           |          |                                   |
+| first_name                                         | text    |           |          |                                   |
+| last_name                                          | text    |           |          |                                   |
+| email                                              | text    |           | not null |                                   |
+| Indexes:                                           |         |           |          |                                   |
+| "users_pkey" PRIMARY KEY, btree (id)               |         |           |          |                                   |
+| "users_email_key" UNIQUE CONSTRAINT, btree (email) |         |           |          |                                   |
+
+** Insert into User Table
+#+begin_src sql
+INSERT INTO users  (age, first_name, last_name, email) VALUES
+       (22, 'John', 'Smith', 'john@smith.com'),
+       (30, 'John', 'Calhoun', 'john@calhoun.io.com')
+       ;
+#+end_src
+
+#+RESULTS:
+| INSERT 0 2 |
+|------------|
+*** Insert with Return value
+#+begin_src sql
+INSERT INTO users  (age, first_name, last_name, email) VALUES
+       (35, 'Kay', 'Freyer', 'kay.freyer@buxtehude.de'),
+       (240, 'Notre', 'Dame', 'ma@dame.com')
+       ;
+#+end_src
+
+#+RESULTS:
+| INSERT 0 2 |
+|------------|
+
+** Select users
+*** all users
+#+begin_src sql
+SELECT * FROM users;
+#+end_src
+#+RESULTS:
+| id | name | email         |
+|----+------+---------------|
+|  1 | kay  | kay@email.com |
+*** by email
+#+begin_src sql
+SELECT * FROM users WHERE email='john@calhoun.io.com';
+#+end_src
+
+#+RESULTS:
+| id | age | first_name | last_name | email               |
+|----+-----+------------+-----------+---------------------|
+|  2 |  30 | John       | Calhoun   | john@calhoun.io.com |
+** Update users
+#+begin_src sql
+UPDATE users
+    SET first_name = 'Kaychen', last_name='FFFreyer'
+    WHERE id = 3;
+#+end_src
+
+#+RESULTS:
+| UPDATE 1 |
+|----------|
+
+** Delete data users
+*** all users
+#+begin_src sql
+DELETE FROM users;
+#+end_src
+*** by id
+#+begin_src sql
+DELETE FROM users
+WHERE id = 1;
+#+end_src
+
+#+RESULTS:
+| DELETE 1 |
+|----------|
+
+** Drop users table
+#+begin_src sql
+DROP TABLE IF EXISTS users;
+#+end_src
+
+#+RESULTS:
+| DROP TABLE |
+|------------|
+* Orders table
+** Create Orders table
+#+begin_src sql
+CREATE TABLE IF NOT EXISTS orders (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  amount INT,
+  description TEXT);
+#+end_src

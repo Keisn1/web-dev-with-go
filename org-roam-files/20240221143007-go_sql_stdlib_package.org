@@ -1,0 +1,18 @@
+:PROPERTIES:
+:ID:       a33dd10c-c547-4d78-8658-faf53300c87e
+:END:
+#+title: Go sql stdlib package
+#+date: [2024-02-21 Wed 14:30]
+#+startup: overview
+
+https://pkg.go.dev/database/sql
+https://go.dev/wiki/SQLDrivers
+
+- Needs driver for specific database
+- multiple drivers
+- drivers are community and expert driven (new dbs and old dbs)
+
+[[id:2ca40750-f5a1-4a0b-9656-0d605326f4a8][How sql drivers in go work]]
+[[id:9d56889b-36e8-4c25-9f7a-68a4cb0a4b6b][Postgres driver for go]]
+
+[[id:f26bc92f-8ef9-44ec-ae03-6b20bbc13cee][Executing SQL with Go]]

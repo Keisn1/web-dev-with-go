@@ -1,0 +1,17 @@
+:PROPERTIES:
+:ID:       2ca40750-f5a1-4a0b-9656-0d605326f4a8
+:END:
+#+title: How sql drivers in go work
+#+date: [2024-02-21 Wed 14:46]
+#+startup: overview
+
+https://www.calhoun.io/why-we-import-sql-drivers-with-the-blank-identifier/
+
+- Inside [[https://pkg.go.dev/database/sql/driver][database/sql/driver package]]
+  - calling init function and init calls sql.Register to register the driver
+  - https://golangdocs.com/init-function-in-golang
+  - e.g.
+    - pq
+      https://github.com/lib/pq/blob/master/conn.go
+      :66
+    - pgx

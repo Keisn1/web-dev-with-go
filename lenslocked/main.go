@@ -14,7 +14,6 @@ import (
 )
 
 func main() {
-	fs := templates.FS
 
 	r := chi.NewRouter()
 	// https://devdocs.io/go/net/http/index#HandleFunc
@@ -26,16 +25,21 @@ func main() {
 	// ListenAndServe listens on the TCP network address addr and then calls Serve
 	// with handler to handle requests on incoming connections. Accepted connections
 	// are configured to enable TCP keep-alives.
-	homeTpl := views.Must(views.ParseFS(fs, "home.gohtml", "tailwind.gohtml"))
+	homeTpl := views.Must(views.ParseFS(templates.FS, "home.gohtml", "tailwind.gohtml"))
 	r.Get("/", controllers.StaticHandler(homeTpl))
 
-	contactTpl := views.Must(views.ParseFS(fs, "contact.gohtml", "tailwind.gohtml"))
+	contactTpl := views.Must(views.ParseFS(templates.FS, "contact.gohtml", "tailwind.gohtml"))
 	r.Route("/contact", func(r chi.Router) {
 		r.Use(middleware.Logger)
 		r.Get("/", controllers.StaticHandler(contactTpl))
 	})
 
-	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(fs, "faq.gohtml", "tailwind.gohtml"))))
+	var usersC controllers.Users
+	usersC.Templates.New = views.Must(views.ParseFS(templates.FS, "signup.gohtml", "tailwind.gohtml"))
+	r.Get("/signup", usersC.New)
+	r.Post("/signup", usersC.Create)
+
+	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
 
 	r.Get("/gallery/{galleryID}", galleryHandler)
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {

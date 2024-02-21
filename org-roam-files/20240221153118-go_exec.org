@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       ceb00050-4637-414f-b41a-ddb3b87073fb
+:END:
+#+title: Go Exec -
+#+date: [2024-02-21 Wed 15:31]
+#+startup: overview
+
+- for commands that don't really expect a return
+- has return type ~Result~
+  - doesn't work with postgres though
