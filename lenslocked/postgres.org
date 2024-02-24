@@ -110,6 +110,11 @@ SELECT * FROM users WHERE email='john@calhoun.io.com';
 | id | age | first_name | last_name | email               |
 |----+-----+------------+-----------+---------------------|
 |  2 |  30 | John       | Calhoun   | john@calhoun.io.com |
+*** by id
+#+begin_src sql
+SELECT * FROM users WHERE id=12;
+#+end_src
+
 ** Update users
 #+begin_src sql
 UPDATE users
@@ -150,7 +155,6 @@ DROP TABLE IF EXISTS users;
 | DROP TABLE |
 |------------|
 * Sessions table
-
 ** Create session table
 #+begin_src sql
 CREATE TABLE IF NOT EXISTS sessions (
@@ -170,12 +174,28 @@ SELECT * FROM sessions;
 #+end_src
 
 #+RESULTS:
-| id | user_id | token_hash |
-|----+---------+------------|
+| id | user_id | token_hash                                   |
+|----+---------+----------------------------------------------|
+|  1 |       4 | bHHeYUD3-9BVYHPSUwaiBkI_u7HqSE67WWjr3LgkOis= |
+*** by userID
+#+begin_src sql
+SELECT user_id
+FROM sessions
+WHERE token_hash='asdf';
+#+end_src
 ** Create session
 *** one sessions
-
-
+#+begin_src sql
+INSERT INTO sessions (user_id, token_hash) VALUES (1, 'xyz-123') RETURNING id;
+#+end_src
+** Update session
+#+begin_src sql
+UPDATE sessions SET token_hash='111' WHERE user_id=1 RETURNING id;
+#+end_src
+** Delete session
+#+begin_src sql
+DELETE FROM sessions WHERE token_hash = $1;
+#+end_src
 
 * Orders table
 ** Create Orders table

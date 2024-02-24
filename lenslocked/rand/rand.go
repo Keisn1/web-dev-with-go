@@ -6,12 +6,6 @@ import (
 	"fmt"
 )
 
-const SessionTokenBytes = 32
-
-func SessionToken() (string, error) {
-	return String(SessionTokenBytes)
-}
-
 func Bytes(n int) ([]byte, error) {
 	b := make([]byte, n)
 	nRead, err := rand.Read(b)
