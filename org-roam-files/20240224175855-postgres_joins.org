@@ -1,0 +1,29 @@
+:PROPERTIES:
+:ID:       f482d87e-30cb-4455-abc1-408d8e5b947f
+:END:
+#+title: postgres joins
+#+date: [2024-02-24 Sat 17:58]
+#+startup: overview
+
+* Inner join (=JOIN)
+* LEFT and RIGH JOINS
+- including records even if related record doesn't exist
+** Left
+- including all items from the table that we are querying
+#+begin_src sql
+select * from users
+         left join sessions on users.id = sessions.user_id;
+#+end_src
+
+** Right
+- including all items from the table that is joined
+#+begin_src sql
+select * from users
+         right join sessions on users.id = sessions.user_id;
+#+end_src
+** Full outer JOIN
+- including all records
+#+begin_src sql
+select * from users
+         full outer join sessions on users.id = sessions.user_id;
+#+end_src

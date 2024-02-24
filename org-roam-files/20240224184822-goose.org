@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       bc103ec3-b214-42f0-807b-d5f4c37a145e
+:END:
+#+title: goose
+#+date: [2024-02-24 Sat 18:48]
+#+startup: overview
+
+~goose create widgets sql~

@@ -61,25 +61,14 @@ func (ss *SessionService) Create(userID int) (*Session, error) {
 
 	session := Session{UserID: userID, Token: token, TokenHash: tokenHash}
 	row := ss.DB.QueryRow(`
-		UPDATE sessions SET token_hash=$2
-		WHERE user_id=$1 RETURNING id;`,
+INSERT INTO sessions (user_id, token_hash)
+VALUES ($1, $2) ON conflict (user_id) DO
+UPDATE
+SET token_hash = $2`,
 		session.UserID,
 		session.TokenHash,
 	)
 	err = row.Scan(&session.ID)
-	if err == sql.ErrNoRows {
-		// if no sesion exists, we will get ErrNoRows. This means we need to
-		// create a session object for that user
-		row = ss.DB.QueryRow(`
-	    INSERT INTO sessions (user_id, token_hash)
-		VALUES ($1, $2)
-		RETURNING id;`,
-			session.UserID,
-			session.TokenHash,
-		)
-		err = row.Scan(&session.ID)
-	}
-
 	// if err was not sql.ErrNoRows, need to check to see if it was any
 	// other error
 	if err != nil {
@@ -93,21 +82,13 @@ func (ss *SessionService) User(token string) (*User, error) {
 	tokenHash := tm.hash(token)
 	var user User
 	row := ss.DB.QueryRow(`
-		SELECT user_id
-		FROM sessions
-		WHERE token_hash=$1;`,
+SELECT users.id, users.email, users.password_hash
+FROM sessions
+JOIN users ON users.id = sessions.user_id
+WHERE sessions.token_hash=$1;`,
 		tokenHash,
 	)
-	err := row.Scan(&user.ID)
-	if err != nil {
-		return nil, fmt.Errorf("user: %w", err)
-	}
-
-	row = ss.DB.QueryRow(
-		`SELECT email, password_hash FROM users WHERE id=$1;`,
-		user.ID,
-	)
-	err = row.Scan(&user.Email, &user.PasswordHash)
+	err := row.Scan(&user.ID, &user.Email, &user.PasswordHash)
 	if err != nil {
 		return nil, fmt.Errorf("user: %w", err)
 	}

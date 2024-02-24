@@ -1,0 +1,28 @@
+:PROPERTIES:
+:ID:       f990921e-964f-475e-88d3-fd574d220dad
+:END:
+#+title: schema migrations
+#+date: [2024-02-24 Sat 18:31]
+#+startup: overview
+
+- series of ordered operations that we want to perform on our database to eventually get it into the correct state
+- intented to be run once
+- in a specific order
+-
+* Example
+- start with
+  - create_users.sql
+  - create_sessions.sql
+- add a column "username"
+  - add_username.sql
+    #+begin_src sql
+ALTER TABLE users ADD username TEXT;
+    #+end_src
+* Undoing migrations (Rollbacks)
+** production example
+- did an update on production of code and schema (migration)
+- need to rollback
+- need to do the schema rollback before the code
+* [[id:cc8d8652-2b6b-4ccf-8029-d4e2de764317][Schema migration tools]]
+* Go tools
+** [[id:bc103ec3-b214-42f0-807b-d5f4c37a145e][goose]]

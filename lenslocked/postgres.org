@@ -114,6 +114,22 @@ SELECT * FROM users WHERE email='john@calhoun.io.com';
 #+begin_src sql
 SELECT * FROM users WHERE id=12;
 #+end_src
+*** all users with a session
+#+begin_src sql
+SELECT * FROM users
+  JOIN sessions ON users.id = sessions.user_id;
+#+end_src
+
+#+RESULTS:
+| id | email | password_hash | id | user_id | token_hash |
+|----+-------+---------------+----+---------+------------|
+*** users by sessions.token_hash
+#+begin_src sql
+SELECT users.id, users.email, users.password_hash
+FROM sessions
+  JOIN users ON users.id = sessions.user_id
+WHERE sessions.token_hash="abasdf";,
+#+end_src
 
 ** Update users
 #+begin_src sql
@@ -159,7 +175,7 @@ DROP TABLE IF EXISTS users;
 #+begin_src sql
 CREATE TABLE IF NOT EXISTS sessions (
   id SERIAL PRIMARY KEY,
-  user_id INT UNIQUE,
+  user_id INT UNIQUE REFERENCES users (id) ON DELETE CASCADE,
   token_hash TEXT UNIQUE NOT NULL
 );
 #+end_src
@@ -172,21 +188,23 @@ CREATE TABLE IF NOT EXISTS sessions (
 #+begin_src sql
 SELECT * FROM sessions;
 #+end_src
-
-#+RESULTS:
-| id | user_id | token_hash                                   |
-|----+---------+----------------------------------------------|
-|  1 |       4 | bHHeYUD3-9BVYHPSUwaiBkI_u7HqSE67WWjr3LgkOis= |
 *** by userID
 #+begin_src sql
 SELECT user_id
 FROM sessions
 WHERE token_hash='asdf';
 #+end_src
-** Create session
+** Insert session
 *** one sessions
 #+begin_src sql
 INSERT INTO sessions (user_id, token_hash) VALUES (1, 'xyz-123') RETURNING id;
+#+end_src
+*** Insert or update
+#+begin_src sql
+INSERT INTO sessions (user_id, token_hash)
+VALUES (1, 'xyz-456') ON conflict (user_id) DO
+UPDATE
+SET token_hash = 'xyz-456'
 #+end_src
 ** Update session
 #+begin_src sql
@@ -197,6 +215,14 @@ UPDATE sessions SET token_hash='111' WHERE user_id=1 RETURNING id;
 DELETE FROM sessions WHERE token_hash = $1;
 #+end_src
 
+** Drop sessions table
+#+begin_src sql
+DROP TABLE IF EXISTS sessions;
+#+end_src
+
+#+RESULTS:
+| DROP TABLE |
+|------------|
 * Orders table
 ** Create Orders table
 #+begin_src sql
@@ -225,4 +251,9 @@ SELECT * FROM orders;
 SELECT id, amount, description
 FROM orders
 WHERE user_id=4;
+#+end_src
+* Indexes
+** on sessions.token_hash
+#+begin_src sql
+CREATE INDEX sessions_token_hash_idx ON session(token_hash);
 #+end_src

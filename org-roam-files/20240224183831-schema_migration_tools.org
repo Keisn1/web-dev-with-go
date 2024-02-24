@@ -1,0 +1,38 @@
+:PROPERTIES:
+:ID:       cc8d8652-2b6b-4ccf-8029-d4e2de764317
+:END:
+#+title: Schema migration tools
+#+date: [2024-02-24 Sat 18:38]
+#+startup: overview
+
+
+- take a list of migration steps and run them in predetermined order
+  - e.g. series of files ordered by name
+- have version associated with each migration file
+- version is used to track whether it has been run or not
+- filename used to help devs understand what happens
+- common way is to use a table for that
+#+begin_src sql
+create table migrations (
+id SERIAL PRIMARY KEY,
+version TEXT UNIQUE
+);
+#+end_src
+* undoing
+- migrations run undo code
+- remove entry from the migrations table
+- undo steps often provided via
+  - separate file with a suffix to notate whether it is a migration or a rollback step
+  - part of the migration file with special comments to notate which part is the migration, and which part is the rollback step
+-
+* naming schema
+- 001-create_users.up.sql
+- 001-create_users.down.sql
+* comment syntax
+#+begin_src sql
+-- +goose Up
+CREATE TABLE users (..)
+
+-- +goose Down
+DROP TABLE users;
+#+end_src
