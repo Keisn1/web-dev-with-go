@@ -1,0 +1,19 @@
+:PROPERTIES:
+:ID:       5407dcae-9ef5-4f2f-b252-e9837abcd8fa
+:END:
+#+title: Context
+#+date: [2024-02-24 Sat 20:22]
+#+startup: overview
+
+- set timeouts for a process
+- cancel process if certain event occurs (e.g. closing the web browser before web server finishes processing the request)
+
+* Request-scoped value
+- specific to the query our code is responding to
+- try to provide values without using th econext where it is possible
+- but from time to time the context might be the best fit
+-
+
+* Goal
+- look up who the user is once
+- store this info in the context
