@@ -35,3 +35,4 @@ cookie := http.Cookie(
 
 * [[id:7546e3cd-e71e-43ec-824f-21bb517c9ae0][Cookie theft]]
 * [[id:c0194e6f-77c4-4fcc-917a-2bf128ba97b1][CSRF attacks]]
+* [[id:6a5c5aec-1316-409b-9b3e-e6515c4c2875][Cookie tampering]]

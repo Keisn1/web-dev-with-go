@@ -149,6 +149,34 @@ DROP TABLE IF EXISTS users;
 #+RESULTS:
 | DROP TABLE |
 |------------|
+* Sessions table
+
+** Create session table
+#+begin_src sql
+CREATE TABLE IF NOT EXISTS sessions (
+  id SERIAL PRIMARY KEY,
+  user_id INT UNIQUE,
+  token_hash TEXT UNIQUE NOT NULL
+);
+#+end_src
+
+#+RESULTS:
+| CREATE TABLE |
+|--------------|
+** Select sessions
+*** all sessions
+#+begin_src sql
+SELECT * FROM sessions;
+#+end_src
+
+#+RESULTS:
+| id | user_id | token_hash |
+|----+---------+------------|
+** Create session
+*** one sessions
+
+
+
 * Orders table
 ** Create Orders table
 #+begin_src sql
