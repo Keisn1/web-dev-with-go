@@ -36,11 +36,12 @@
 #+end_src
 
 #+RESULTS:
-| List of relations |        |       |       |
-|-------------------+--------+-------+-------|
-| Schema            | Name   | Type  | Owner |
-| public            | orders | table | baloo |
-| public            | users  | table | baloo |
+| List of relations |                  |       |       |
+|-------------------+------------------+-------+-------|
+| Schema            | Name             | Type  | Owner |
+| public            | goose_db_version | table | baloo |
+| public            | sessions         | table | baloo |
+| public            | users            | table | baloo |
 
 * Users table
 ** Create User table

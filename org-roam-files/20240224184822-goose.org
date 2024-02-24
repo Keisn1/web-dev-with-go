@@ -6,3 +6,18 @@
 #+startup: overview
 
 ~goose create widgets sql~
+* Workflow with goose to prevent schema versioning problem
+1. Rollback migrations with goose down or reset
+   - goose down
+2. Pull changes that other developers have pushed to our team's repo.
+   This assumes that the origin remote branch is configured to somehing
+   like github where i can pull code other devs have submitted
+   - git pull origin <main-branc> --rebase
+3. Run goose fix to rename my migrations with the correct versions
+   - goose fix
+4. Run the migrations to verify they work
+   - goose up
+5. Test everything
+   - go test ./..
+6. Commit and merge everything to the main branch my team uses
+   This might be via a github pull request or something else

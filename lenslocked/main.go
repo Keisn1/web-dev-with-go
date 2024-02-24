@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/gorilla/csrf"
 	"github.com/keisn1/lenslocked/controllers"
+	"github.com/keisn1/lenslocked/migrations"
 	"github.com/keisn1/lenslocked/models"
 	"github.com/keisn1/lenslocked/templates"
 	"github.com/keisn1/lenslocked/views"
@@ -27,12 +28,19 @@ func main() {
 	})
 
 	r.Get("/faq", controllers.FAQ(views.Must(views.ParseFS(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
+	cfg := models.DefaultPostgresConfig()
+	fmt.Println(cfg.String())
 
-	db, err := models.Open(models.DefaultPostgresConfig())
+	db, err := models.Open(cfg)
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
+
+	err = models.MigrateFS(db, migrations.FS, ".")
+	if err != nil {
+		panic(err)
+	}
 
 	var usersC controllers.Users
 	usersC.UserService = &models.UserService{DB: db}
