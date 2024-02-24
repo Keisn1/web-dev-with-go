@@ -17,19 +17,37 @@ type Users struct {
 	UserService *models.UserService
 }
 
+func (u Users) CurrentUser(w http.ResponseWriter, r *http.Request) {
+	email, err := r.Cookie("email")
+	if err != nil {
+		fmt.Fprint(w, "The email cookie could not be read")
+		return
+	}
+	fmt.Fprintf(w, "Email cookie: %s\n", email.Value)
+	fmt.Fprintf(w, "Headers: %+v\n", r.Header)
+}
+
 func (u Users) ProcessSignIn(w http.ResponseWriter, r *http.Request) {
 	nu := models.NewUser{Email: r.FormValue("email"), Password: r.FormValue("password")}
-	_, err := u.UserService.Authenticate(nu)
+	user, err := u.UserService.Authenticate(nu)
 	if errors.Is(err, sql.ErrNoRows) {
 		fmt.Fprintf(w, "Email address not known")
 		return
 	}
 	if err != nil {
 		fmt.Fprintf(w, "Wrong password")
-
 		return
 	}
-	fmt.Fprint(w, "Success, you're logged in")
+
+	cookie := http.Cookie{
+		Name:     "email",
+		Value:    user.Email,
+		Path:     "/",
+		HttpOnly: true,
+	}
+	http.SetCookie(w, &cookie)
+
+	fmt.Fprintf(w, "User account authenticated: %v", user)
 }
 
 func (u Users) SignIn(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +55,7 @@ func (u Users) SignIn(w http.ResponseWriter, r *http.Request) {
 		Email string
 	}
 	data.Email = r.FormValue("email")
-	u.Templates.SignIn.Execute(w, data)
+	u.Templates.SignIn.Execute(w, r, data)
 }
 
 func (u Users) New(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +64,7 @@ func (u Users) New(w http.ResponseWriter, r *http.Request) {
 		Email string
 	}
 	data.Email = r.FormValue("email")
-	u.Templates.New.Execute(w, data)
+	u.Templates.New.Execute(w, r, data)
 }
 
 func (u Users) Create(w http.ResponseWriter, r *http.Request) {

@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	chi "github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/gorilla/csrf"
 	"github.com/keisn1/lenslocked/controllers"
 	"github.com/keisn1/lenslocked/models"
 	"github.com/keisn1/lenslocked/templates"
@@ -43,22 +43,31 @@ func main() {
 	r.Get("/signin", usersC.SignIn)
 	r.Post("/signin", usersC.ProcessSignIn)
 
+	r.Get("/users/me", usersC.CurrentUser)
+
 	r.Get("/gallery/{galleryID}", galleryHandler)
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not foundicilious", http.StatusNotFound)
 	})
 	fmt.Println("Starting the server on: 3000...")
-	http.ListenAndServe(":3000", r)
+
+	csrfKey := "gFvi45R4fy5xNBlnEeZtQbfAVCYEIAUX"
+	csrfMw := csrf.Protect(
+		[]byte(csrfKey),
+		// TODO: Fix this before deploying
+		csrf.Secure(false),
+	)
+	http.ListenAndServe(":3000", csrfMw(r))
 }
 
-func executeTemplate(w http.ResponseWriter, filepath string) {
-	tpl, err := views.Parse(filepath)
-	if err != nil {
-		log.Printf("parsing template: %v", err)
-		return
-	}
-	tpl.Execute(w, nil)
-}
+// func executeTemplate(w http.ResponseWriter, filepath string) {
+// 	tpl, err := views.Parse(filepath)
+// 	if err != nil {
+// 		log.Printf("parsing template: %v", err)
+// 		return
+// 	}
+// 	tpl.Execute(w, nil)
+// }
 
 func galleryHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "text/html; charset=utf-8")

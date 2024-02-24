@@ -1,0 +1,37 @@
+:PROPERTIES:
+:ID:       0b5b68d7-a833-43a3-a953-a0c0ba0f4ed9
+:END:
+#+title: Cookies in Go
+#+date: [2024-02-24 Sat 07:55]
+#+startup: overview
+
+1. Instantiate http.Cookie
+2. Calling SetCookie function with http.[[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]] and http.Cookie
+
+#+begin_src go :results output :imports "fmt"
+cookie := http.Cookie(
+	Name: "cookie key",
+	Value: "cookie value"
+)
+#+end_src
+
+- (Invalid cookies may be slently dropped) && (SetCookie function will not return an error)
+  - set-cookie only adds and does not validate anything
+- headers need to be set befroe writing to the [[id:2c7a10ed-b072-493f-bd4b-63df56490d15][ResponseWriter]], otherwise no effect
+  - set-cookie creates a header, so it needs to be called before writing to the response
+"""
+    // Changing the header map after a call to WriteHeader (or
+    // Write) has no effect unless the HTTP status code was of the
+    // 1xx class or the modified headers are trailers.
+    ...
+    // If WriteHeader has not yet been called, Write calls
+    // WriteHeader(http.StatusOK) before writing the data. If the Header
+    // does not contain a Content-Type line, Write adds a Content-Type set
+    // to the result of passing the initial 512 bytes of written data to
+    // DetectContentType. Additionally, if the total size of all written
+    // data is under a few KB and there are no Flush calls, the
+    // Content-Length header is added automatically.
+"""
+
+* [[id:7546e3cd-e71e-43ec-824f-21bb517c9ae0][Cookie theft]]
+* [[id:c0194e6f-77c4-4fcc-917a-2bf128ba97b1][CSRF attacks]]

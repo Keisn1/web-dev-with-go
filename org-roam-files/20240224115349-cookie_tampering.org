@@ -1,0 +1,48 @@
+:PROPERTIES:
+:ID:       6a5c5aec-1316-409b-9b3e-e6515c4c2875
+:END:
+#+title: Cookie tampering
+#+date: [2024-02-24 Sat 11:53]
+#+startup: overview
+
+- process of altering the data sotred in a cookie
+  o
+- can not blindly trust the data stored in a cookie
+  - attacker can modify
+  - attacker can send any arbitrary cookie
+* Prevention
+** Digitally signing data
+1. using a hashing function that requires a secret key, that only the server knows
+  ([[id:526e5aa9-67d7-408b-a69d-023a97699e72][HMAC]])
+  #+begin_src go :results output :imports "fmt"
+  secret := "secret-key"
+  cookie := `{"id": 123, "email": "kay@email"}`
+  h := hmac.New(sha256.New, []byte[secret])
+  h.Write([]byte(cookie))
+  result := h.Sum(nil)
+  #+end_src
+2. then store the signature inside the cookie, and send with all future requests
+   #+begin_src js
+{
+    "id"= 123,
+    "email": "kay@email",
+    "signature": "a;sldjj19akjsjddhf"
+}
+   #+end_src
+3. validate data in the cookie when getting a request
+   - read signature
+   - hash rest of the JSON (without signature)
+   - compare calculated hash with sent hash
+   -
+*** [[id:5eaa1b4e-fd71-4ccc-a2ce-9da0d32a233c][JSON web tokens]]
+** Obfuscation
+- process of making the data in a cookie unclear to attackers
+- making it impossible to determine how to generate valid data
+- less error-prone than digital signatures
+*** process (using sessions)
+1. Generate random string for each user
+  | user    | random_string (session token / session ID) |
+  |---------+---------------|
+  | bob@bab | po8aukjk3h    |
+  | bab@bob | a;dlkfj       |
+2. store random string inside of our cookie

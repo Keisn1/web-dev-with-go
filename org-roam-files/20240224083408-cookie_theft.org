@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       7546e3cd-e71e-43ec-824f-21bb517c9ae0
+:END:
+#+title: Cookie theft
+#+date: [2024-02-24 Sat 08:34]
+#+startup: overview
+
+* via packet sniffing
+- reading web requests before they arrive at intended server
+** prevention
+- ssl/tls
+* via physical access to a device
+** prevention
+- having a way of invalidate all prior cookies
+- using expirations on sessions
+- linking user's IP

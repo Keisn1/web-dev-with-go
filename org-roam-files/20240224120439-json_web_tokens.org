@@ -1,0 +1,9 @@
+:PROPERTIES:
+:ID:       5eaa1b4e-fd71-4ccc-a2ce-9da0d32a233c
+:END:
+#+title: JSON web tokens
+#+date: [2024-02-24 Sat 12:04]
+#+startup: overview
+
+~JWT~
+standard that utilizes digital signatures to create authentication tokens

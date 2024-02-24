@@ -24,12 +24,12 @@ type UserService struct {
 }
 
 func (us *UserService) Authenticate(nu NewUser) (*User, error) {
-	email := strings.ToLower(nu.Email)
+	var user User
+	user.Email = strings.ToLower(nu.Email)
 	row := us.DB.QueryRow(
 		`SELECT id, password_hash FROM users WHERE email = $1`,
-		email,
+		user.Email,
 	)
-	var user User
 	err := row.Scan(&user.ID, &user.PasswordHash)
 	if err == sql.ErrNoRows {
 		return nil, fmt.Errorf("User not in DB: %w", err)

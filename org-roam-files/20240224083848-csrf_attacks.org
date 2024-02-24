@@ -1,0 +1,23 @@
+:PROPERTIES:
+:ID:       c0194e6f-77c4-4fcc-917a-2bf128ba97b1
+:END:
+#+title: CSRF attacks
+#+date: [2024-02-24 Sat 08:38]
+#+startup: overview
+
+Cross-site request forgery
+1. create fake link, form, image tag
+2. try to let the browser include the cookies
+3. when submitting a form, browser sends cookies with it
+
+* Good reason why GET-requests should never be used for actions that alter data
+* CSRF with POST, PUT methods
+#+begin_src html
+<form method="POST" id="" action="https://yourbank.com/transfer">
+  <input type="hidden" name="recipient" value="atttacker@evilsite.com" />
+  <input type="hidden" name="amount" value="500" />
+  <button type="submit">Dispute the charge</button>
+</form>
+#+end_src
+
+* [[id:ff87dd07-eca9-402a-b1ed-b9afa7221716][CSRF tokens]]

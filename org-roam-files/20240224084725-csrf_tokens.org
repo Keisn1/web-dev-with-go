@@ -1,0 +1,16 @@
+:PROPERTIES:
+:ID:       ff87dd07-eca9-402a-b1ed-b9afa7221716
+:END:
+#+title: CSRF tokens
+#+date: [2024-02-24 Sat 08:47]
+#+startup: overview
+
+- needs to be persisted between requests
+- once set, token is being used as a hidden filed in all HTML forms
+- when form submitted, first thing to do is to validate the token
+- ExternalWebsites can not read cookies for other websites and can not read responses that they send to us
+  - can't read Token
+
+#+begin_src go :results output :imports "fmt"
+csrfToken := "some-random-string"
+#+end_src

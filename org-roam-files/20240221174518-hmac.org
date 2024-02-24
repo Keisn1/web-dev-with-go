@@ -6,3 +6,6 @@
 #+startup: overview
 
 - can be used for hashing session tokens for example
+- ideal for signing data
+  - requires secret key and data to be hashed
+  - output changes if either of these change
