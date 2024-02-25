@@ -17,3 +17,5 @@
 * Goal
 - look up who the user is once
 - store this info in the context
+
+* Storing context-specific values - [[id:50e9518e-d566-4692-9b56-6bf83d754cc0][WithValue function]]

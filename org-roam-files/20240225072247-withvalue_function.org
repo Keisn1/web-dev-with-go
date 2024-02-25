@@ -1,0 +1,97 @@
+:PROPERTIES:
+:ID:       50e9518e-d566-4692-9b56-6bf83d754cc0
+:END:
+#+title: WithValue function
+#+date: [2024-02-25 Sun 07:22]
+#+startup: overview
+
+#+begin_src go :results output :imports "fmt"
+func WithValue(parent Context, key, val any) Context {}
+#+end_src
+- returns new Context with value stored under given key
+- calling Value method to retreive value
+- defined in context.Context interface
+  #+begin_src go :results output :imports "fmt"
+type Context interface {
+	Deadline() (deadline time.Time, ok bool)
+	Done() <-chan struct{}
+	Err() error
+	Value(key any) any
+}
+  #+end_src
+* example
+#+begin_src go :results output :imports "fmt"
+func main() {
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, "favorite-color", "blue")
+	value := ctx.Value("favorite-color")
+	fmt.Println(value)
+}
+#+end_src
+- wrapping one context into the other
+- similar to error handling
+- return type of ~any~
+* Pitfalls
+- avoid using standard types as keys
+  - avoiding the risk of a context value being overwritten by other code in an application
+    - meaning using the same "key"
+    - same "key" but different type will be a different key
+- even better is to use an unexported type
+#+begin_src go :results output :imports "fmt"
+// We set the color to blue
+ctx = context.WithValue(ctx, "favorite-color", "blue")
+// Code in another package could potentially overwrite our value if it happens
+// to use the same key value.
+ctx = context.WithValue(ctx, "favorite-color", 0xFF0000)
+// Oh no, this returns "red"!
+value := ctx.Value("favorite-color")
+#+end_src
+** good example
+#+begin_src go :results output :imports "fmt"
+type ctxKey string
+const (
+	favoriteColorKey ctxKey = "favorite-color"
+)
+
+func main() {
+	ctx := context.Background()
+	// Our code uses our unexported `ctxKey` type. Even though the value still
+	// appears to be a string with the contents "favorite-color", Go and the
+	// context package treat this different from a string with the value
+	// "favorite-color"
+	ctx = context.WithValue(ctx, favoriteColorKey, "blue")
+	// This key has a type of string, not ctxKey.
+	ctx = context.WithValue(ctx, "favorite-color", 0xFF0000)
+	// Each key has a unique type, so the keys won't match and we will get
+	// unique values for each key.
+	value1 := ctx.Value(favoriteColorKey)
+	value2 := ctx.Value("favorite-color")
+	fmt.Println(value1)
+	fmt.Println(value2)
+}
+#+end_src
+* Using [[id:65ad71e4-92d1-4267-8da8-e6357e8c445b][Go type assertions]] to handle values
+** good example
+#+begin_src go :results output :imports "fmt"
+var a any = "hello"
+// ok tells us if the assertion was successful or not
+// s has the value of a in the new type - string - if this was successful
+s, ok := a.(string)
+fmt.Println(s, ok)
+#+end_src
+
+#+RESULTS:
+: hello true
+** panic example
+- if we omit the value and the assertion fails, code will panic
+  #+begin_src go :results output :imports "fmt"
+var a any = "hello"
+i := a.(int)
+fmt.Println("i am not getting here")
+fmt.Println(i)
+  #+end_src
+
+  #+RESULTS:
+
+** example with context
+[[file:~/workspace/web-development-with-go/lenslocked/cmd/context/contextExp.go::package main][course example]]
