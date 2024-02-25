@@ -1,0 +1,52 @@
+:PROPERTIES:
+:ID:       3649e76d-e0f4-4adf-9fbd-8701a881be66
+:END:
+#+title: smtp services
+#+date: [2024-02-25 Sun 10:52]
+#+startup: overview
+
+Simple Mail Transfer Protocol
+
+- historically, mail server
+  - probably would land inside the spam of the user, since it has been abused a lot for that
+- use personal email provider
+  - too limited
+- paid email service
+  - Reliability
+  - Simplicity
+  - Scale
+  - additional features
+    - dashboards to track total emails sent, bounce rates, spam reports
+    - testing inboxes for developers
+    - improved deliverability by rate limiting and using other tricks to avoid emails being flagged as spam
+  - downside
+    - costs money
+* Custom API provided by the email service
+- slightly easier to use for common cases
+- can create a bit more of vendor lock-in
+
+* Simple Mail Transfer Protocol (SMTP)
+- internet standard
+- most email services support SMTP
+  - SendGrid
+  - mailtrap
+    - has an inbox UI
+  - sendinblue
+
+* Credentials
+** host (sandbox.smtp.mailtrap.io)
+** port (587)
+** username (unique for each account)
+** password (unique for each account)
+
+* Format
+#+begin_src mail
+MIME-Version: 1.0
+Date: Sun, 22 Jan 2023 11:54:48 -0500
+To: jon@calhoun.io
+From: test@lenslocked.com
+Subject: This is a test email
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+This is the body of the email
+#+end_src

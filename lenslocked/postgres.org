@@ -244,6 +244,21 @@ DROP TABLE IF EXISTS sessions;
 #+RESULTS:
 | DROP TABLE |
 |------------|
+* Password_reset table
+** Create table
+#+begin_src sql
+CREATE TABLE password_resets (
+id SERIAL PRIMARY KEY,
+user_id INT UNIQUE REFERENCES users (id) ON DELETE CASCADE,
+token_hash TEXT UNIQUE NOT NULL,
+expires_at TIMESTAMPTZ NOT NULL
+);
+#+end_src
+** Drop table
+#+begin_src sql
+DROP TABLE password_resets;
+#+end_src
+
 * Orders table
 ** Create Orders table
 #+begin_src sql
