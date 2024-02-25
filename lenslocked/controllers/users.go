@@ -28,13 +28,21 @@ func (umw UserMiddleware) RequireUser(next http.Handler) http.Handler {
 func (umw UserMiddleware) SetUser(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		token, err := readCookie(r, CookieSession)
-		if err != nil {
+		if err != nil || token == "" {
+			if token == "" {
+				fmt.Println("token is empty string")
+			} else {
+				err = fmt.Errorf("readCookie in SetUser: %w", err)
+				fmt.Println(err)
+			}
 			next.ServeHTTP(w, r)
 			return
 		}
 
 		user, err := umw.SessionService.User(token)
 		if err != nil {
+			err = fmt.Errorf("readCookie in SetUser: %w", err)
+			fmt.Println(err)
 			next.ServeHTTP(w, r)
 			return
 		}
