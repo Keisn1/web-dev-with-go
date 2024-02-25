@@ -98,10 +98,9 @@ INSERT INTO users  (name, email) VALUES
 SELECT * FROM users;
 #+end_src
 #+RESULTS:
-| id | email             | password_hash                                                |
-|----+-------------------+--------------------------------------------------------------|
-|  2 | kay.freyr@adf.com | $2a$10$iLr5aX1MBgICr3EG6EJsTuOlAES6Dxo6emg5LgXmLY9m.c5jRyK0C |
-|  3 | kay@email         | $2a$10$SXkpCYVFhCkUO.tycSfh5OBuXF9mgrC5XNvCo3j.eaT67MyUqQK3K |
+| id | email     | password_hash                                                |
+|----+-----------+--------------------------------------------------------------|
+|  1 | kay@email | $2a$10$xpE8Wv4.qGv59.WuyTZmp.rvg95ahfYqQsuINrWCFfasb.kdbrsXG |
 *** by email
 #+begin_src sql
 SELECT * FROM users WHERE email='john@calhoun.io.com';
@@ -189,6 +188,12 @@ CREATE TABLE IF NOT EXISTS sessions (
 #+begin_src sql
 SELECT * FROM sessions;
 #+end_src
+
+#+RESULTS:
+| id | user_id | token_hash                                   |
+|----+---------+----------------------------------------------|
+|  1 |       1 | MzV1YrxCP3giLGBHaygDQjSn_nJnV-c9B5g7f2q0MBI= |
+
 *** by userID
 #+begin_src sql
 SELECT user_id
@@ -200,6 +205,10 @@ WHERE token_hash='asdf';
 #+begin_src sql
 INSERT INTO sessions (user_id, token_hash) VALUES (1, 'xyz-123') RETURNING id;
 #+end_src
+
+#+RESULTS:
+|---|
+
 *** Insert or update
 #+begin_src sql
 INSERT INTO sessions (user_id, token_hash)
@@ -207,6 +216,17 @@ VALUES (1, 'xyz-456') ON conflict (user_id) DO
 UPDATE
 SET token_hash = 'xyz-456'
 #+end_src
+#+begin_src sql
+INSERT INTO sessions (user_id, token_hash)
+VALUES (1, '$2a$10$Z1LM30ZqmEkvj3Cxxr7s9esH9zbMlKsw1PzQZRmT.ONbmT.V/xB62') ON conflict (user_id) DO
+UPDATE
+SET token_hash = '$2a$10$Z1LM30ZqmEkvj3Cxxr7s9esH9zbMlKsw1PzQZRmT.ONbmT.V/xB62';
+#+end_src
+
+#+RESULTS:
+| INSERT 0 1 |
+|------------|
+
 ** Update session
 #+begin_src sql
 UPDATE sessions SET token_hash='111' WHERE user_id=1 RETURNING id;

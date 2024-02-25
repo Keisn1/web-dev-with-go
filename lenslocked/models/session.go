@@ -64,7 +64,8 @@ func (ss *SessionService) Create(userID int) (*Session, error) {
 INSERT INTO sessions (user_id, token_hash)
 VALUES ($1, $2) ON conflict (user_id) DO
 UPDATE
-SET token_hash = $2`,
+SET token_hash = $2
+RETURNING id;`,
 		session.UserID,
 		session.TokenHash,
 	)
@@ -72,7 +73,7 @@ SET token_hash = $2`,
 	// if err was not sql.ErrNoRows, need to check to see if it was any
 	// other error
 	if err != nil {
-		return nil, fmt.Errorf("create: %w", err)
+		return nil, fmt.Errorf("session create: %w", err)
 	}
 	return &session, nil
 }
