@@ -6,6 +6,9 @@ import (
 	"strings"
 
 	"errors"
+
+	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgx/v5/pgconn"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -82,8 +85,13 @@ INSERT INTO users  (email, password_hash)
 	)
 	err = row.Scan(&user.ID)
 	if err != nil {
-		fmt.Printf("Type = %T\n", err)
-		fmt.Printf("Error = %v\n", err)
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			if pgErr.Code == pgerrcode.UniqueViolation {
+				fmt.Println("here")
+				return nil, ErrEmailTaken
+			}
+		}
 		return nil, fmt.Errorf("Inserting User, UserService.Create: %w", err)
 	}
 	return &user, nil
