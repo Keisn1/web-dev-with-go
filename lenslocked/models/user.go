@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -21,6 +22,28 @@ type NewUser struct {
 
 type UserService struct {
 	DB *sql.DB
+}
+
+var (
+	// A common pattern is to add the package as a prefix to the error for
+	// context.
+	ErrEmailTaken = errors.New("models: email address is already in use")
+)
+
+func (us *UserService) UpdatePassword(userID int, password string) error {
+	hashedBytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("update password: %w", err)
+	}
+	passwordHash := string(hashedBytes)
+	_, err = us.DB.Exec(`
+UPDATE users
+SET password_hash = $2
+WHERE id = $1;`, userID, passwordHash)
+	if err != nil {
+		return fmt.Errorf("update password: %w", err)
+	}
+	return nil
 }
 
 func (us *UserService) Authenticate(nu NewUser) (*User, error) {
@@ -59,6 +82,8 @@ INSERT INTO users  (email, password_hash)
 	)
 	err = row.Scan(&user.ID)
 	if err != nil {
+		fmt.Printf("Type = %T\n", err)
+		fmt.Printf("Error = %v\n", err)
 		return nil, fmt.Errorf("Inserting User, UserService.Create: %w", err)
 	}
 	return &user, nil

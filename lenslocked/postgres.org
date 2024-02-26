@@ -258,7 +258,52 @@ expires_at TIMESTAMPTZ NOT NULL
 #+begin_src sql
 DROP TABLE password_resets;
 #+end_src
-
+** Update password
+#+begin_src sql
+UPDATE users
+SET password_hash = $2
+WHERE id = $1;
+#+end_src
+** Select
+*** password resets where userId =
+#+begin_src sql
+SELECT password_resets.id,
+password_resets.expires_at,
+users.id,
+users.email,
+users.password_hash
+FROM password_resets
+JOIN users ON users.id = password_resets.user_id
+WHERE password_resets.token_hash = $1;
+#+end_src
+** delete
+*** by id
+#+begin_src sql
+DELETE FROM password_resets
+WHERE id = $1;
+#+end_src
+* Gallery
+** Create Table
+#+begin_src sql
+CREATE TABLE galleries (
+id SERIAL PRIMARY KEY,
+user_id INT REFERENCES users (id),
+title TEXT
+);
+#+end_src
+** Insert
+*** gallery item
+#+begin_src sql
+INSERT INTO galleries (title, user_id)
+VALUES ($1, $2) RETURNING id;
+#+end_src
+** Select
+*** by id
+#+begin_src sql
+SELECT title, user_id
+FROM galleries
+WHERE id = $1;
+#+end_src
 * Orders table
 ** Create Orders table
 #+begin_src sql
