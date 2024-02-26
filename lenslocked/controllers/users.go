@@ -2,12 +2,12 @@ package controllers
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
 
 	"github.com/keisn1/lenslocked/context"
+	"github.com/keisn1/lenslocked/errors"
 	"github.com/keisn1/lenslocked/models"
 )
 
@@ -203,8 +203,10 @@ func (u Users) Create(w http.ResponseWriter, r *http.Request) {
 	nu.Password = r.FormValue("password")
 	user, err := u.UserService.Create(nu)
 	if err != nil {
-		fmt.Println(err)
-		http.Error(w, "Something went wrong.", http.StatusInternalServerError)
+		if errors.Is(err, models.ErrEmailTaken) {
+			err = errors.Public(err, "That email address is already associated with an account")
+		}
+		u.Templates.New.Execute(w, r, nu, err)
 		return
 	}
 

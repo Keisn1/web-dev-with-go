@@ -27,12 +27,6 @@ type UserService struct {
 	DB *sql.DB
 }
 
-var (
-	// A common pattern is to add the package as a prefix to the error for
-	// context.
-	ErrEmailTaken = errors.New("models: email address is already in use")
-)
-
 func (us *UserService) UpdatePassword(userID int, password string) error {
 	hashedBytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {

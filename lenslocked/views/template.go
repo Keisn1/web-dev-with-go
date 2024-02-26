@@ -3,6 +3,7 @@ package views
 import (
 	"bytes"
 	"embed"
+	"errors"
 	"fmt"
 	"html/template"
 	"io"
@@ -12,14 +13,20 @@ import (
 	"github.com/gorilla/csrf"
 	"github.com/keisn1/lenslocked/context"
 	"github.com/keisn1/lenslocked/models"
+	"path/filepath"
 )
 
 type Template struct {
 	hmtlTpl *template.Template
 }
 
+// We will use this to determine if an error provides the Public method
+type public interface {
+	Public() string
+}
+
 func ParseFS(fs embed.FS, patterns ...string) (Template, error) {
-	tpl := template.New(patterns[0])
+	tpl := template.New(filepath.Base(patterns[0]))
 	tpl = tpl.Funcs(
 		template.FuncMap{
 			"csrfField": func() (template.HTML, error) {
@@ -40,8 +47,9 @@ func ParseFS(fs embed.FS, patterns ...string) (Template, error) {
 	return Template{hmtlTpl: tpl}, nil
 }
 
-func (t Template) Execute(w http.ResponseWriter, r *http.Request, data any) {
+func (t Template) Execute(w http.ResponseWriter, r *http.Request, data any, errs ...error) {
 	tpl := t.hmtlTpl
+	errMsgs := errMessages(errs...)
 	tpl = tpl.Funcs(
 		template.FuncMap{
 			"csrfField": func() template.HTML {
@@ -49,6 +57,9 @@ func (t Template) Execute(w http.ResponseWriter, r *http.Request, data any) {
 			},
 			"currentUser": func() *models.User {
 				return context.User(r.Context())
+			},
+			"errors": func() []string {
+				return errMsgs
 			},
 		},
 	)
@@ -76,4 +87,18 @@ func Must(t Template, err error) Template {
 		panic(err)
 	}
 	return t
+}
+
+func errMessages(errs ...error) []string {
+	var msgs []string
+	for _, err := range errs {
+		var pubErr public
+		if errors.As(err, &pubErr) {
+			msgs = append(msgs, pubErr.Public())
+		} else {
+			fmt.Println(err)
+			msgs = append(msgs, "Something went wrong.")
+		}
+	}
+	return msgs
 }

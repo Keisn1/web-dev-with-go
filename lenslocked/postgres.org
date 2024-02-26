@@ -100,7 +100,7 @@ SELECT * FROM users;
 #+RESULTS:
 | id | email     | password_hash                                                |
 |----+-----------+--------------------------------------------------------------|
-|  1 | kay@email | $2a$10$xpE8Wv4.qGv59.WuyTZmp.rvg95ahfYqQsuINrWCFfasb.kdbrsXG |
+|  1 | kay@email | $2a$10$/OiyMAF82O8Tbpa6d/RUfOPNdQIoPLydzpSSrgjnkGTxKG.6WdjP. |
 *** by email
 #+begin_src sql
 SELECT * FROM users WHERE email='john@calhoun.io.com';
@@ -304,34 +304,24 @@ SELECT title, user_id
 FROM galleries
 WHERE id = $1;
 #+end_src
-* Orders table
-** Create Orders table
+*** by userID
 #+begin_src sql
-CREATE TABLE IF NOT EXISTS orders (
-  id SERIAL PRIMARY KEY,
-  user_id INT NOT NULL,
-  amount INT,
-  description TEXT);
+SELECT id, title
+FROM galleries
+WHERE user_id = $1;
 #+end_src
-** Select Orders
-*** all
+** Update
+*** by id
 #+begin_src sql
-SELECT * FROM orders;
+UPDATE galleries
+SET title = $2
+WHERE id = $1;`, gallery.ID, gallery.Title)
 #+end_src
-
-#+RESULTS:
-| id | user_id | amount | description   |
-|----+---------+--------+---------------|
-|  1 |       4 |    100 | Fake order @1 |
-|  2 |       4 |    200 | Fake order @2 |
-|  3 |       4 |    300 | Fake order @3 |
-|  4 |       4 |    400 | Fake order @4 |
-|  5 |       4 |    500 | Fake order @5 |
-*** by userId
+** Delete
+*** by id
 #+begin_src sql
-SELECT id, amount, description
-FROM orders
-WHERE user_id=4;
+DELETE FROM galleries
+WHERE id = $1;
 #+end_src
 * Indexes
 ** on sessions.token_hash
