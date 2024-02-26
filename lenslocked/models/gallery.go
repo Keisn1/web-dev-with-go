@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -96,6 +97,10 @@ WHERE id = $1;`, id)
 	if err != nil {
 		return fmt.Errorf("delete gallery by id: %w", err)
 	}
+	err = os.RemoveAll(service.galleryDir(id))
+	if err != nil {
+		return fmt.Errorf("delete gallery images: %w", err)
+	}
 	return nil
 }
 
@@ -173,6 +178,39 @@ func (service *GalleryService) DeleteImage(galleryID int, filename string) error
 	err = os.Remove(image.Path)
 	if err != nil {
 		return fmt.Errorf("deleting image: %w", err)
+	}
+	return nil
+}
+
+func (service *GalleryService) imageContentTypes() []string {
+	return []string{"image/png", "image/jpeg", "image/gif"}
+}
+
+func (service *GalleryService) CreateImage(galleryID int, filename string, contents io.ReadSeeker) error {
+	err := checkContentType(contents, service.imageContentTypes())
+	if err != nil {
+		return fmt.Errorf("creating image %v: %w", filename, err)
+	}
+	if !hasExtension(filename, service.extensions()) {
+		return fmt.Errorf("creating image %v: %w", filename, err)
+	}
+
+	galleryDir := service.galleryDir(galleryID)
+	err = os.MkdirAll(galleryDir, 0755)
+	if err != nil {
+		return fmt.Errorf("creating gallery-%d images directory: %w", galleryID, err)
+	}
+
+	imagePath := filepath.Join(galleryDir, filename)
+	dst, err := os.Create(imagePath)
+	if err != nil {
+		return fmt.Errorf("creating image file: %w", err)
+	}
+	defer dst.Close()
+
+	_, err = io.Copy(dst, contents)
+	if err != nil {
+		return fmt.Errorf("copying contents to image: %w", err)
 	}
 	return nil
 }
