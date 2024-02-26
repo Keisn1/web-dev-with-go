@@ -2,11 +2,38 @@ package main
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
 	"github.com/keisn1/lenslocked/models"
+	"os"
 )
 
+type config struct {
+	PSQL models.PostgresConfig
+	SMTP models.SMTPConfig
+	CSRF struct {
+		Key    string
+		Secure bool
+	}
+	Server struct {
+		Address string
+	}
+}
+
 func main() {
-	db, err := models.Open(models.DefaultPostgresConfig())
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+
+	psqlCfg := models.PostgresConfig{
+		Host:     os.Getenv("PSQL_HOST"),
+		Port:     os.Getenv("PSQL_PORT"),
+		User:     os.Getenv("PSQL_USER"),
+		Password: os.Getenv("PSQL_PASSWORD"),
+		Database: os.Getenv("PSQL_DATABASE"),
+		SSLMode:  os.Getenv("PSQL_SSLMODE"),
+	}
+	db, err := models.Open(psqlCfg)
 	if err != nil {
 		panic(err)
 	}

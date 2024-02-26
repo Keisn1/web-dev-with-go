@@ -1,20 +1,10 @@
+# Only put things in this file that we want in *every* environment
 version: "3.9"
-
 services:
   db:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: baloo
-      POSTGRES_PASSWORD: junglebook
-      POSTGRES_DB: lenslocked
-    ports:
-      - 4321:5432
-
-  adminer:
-    image: adminer
-    restart: always
-    environment:
-      ADMINER_DESIGN: dracula
-    ports:
-      - 3333:8080
+      POSTGRES_USER: ${PSQL_USER}
+      POSTGRES_PASSWORD: ${PSQL_PASSWORD}
+      POSTGRES_DB: ${PSQL_DATABASE}
