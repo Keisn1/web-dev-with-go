@@ -35,10 +35,10 @@ func loadEnvConfig() (config, error) {
 	if err != nil {
 		return cfg, err
 	}
-	fmt.Println(os.Getenv("SMTP_USERNAME"))
+
 	// TODO: Read the PSQL values from an ENV variable
 	cfg.PSQL = models.PostgresConfig{
-		Host:     os.Getenv("PSQL_HOST"),
+		Host:     "db",
 		Port:     os.Getenv("PSQL_PORT"),
 		User:     os.Getenv("PSQL_USER"),
 		Password: os.Getenv("PSQL_PASSWORD"),
@@ -70,16 +70,24 @@ func main() {
 		panic(err)
 	}
 
+	err = run(cfg)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func run(cfg config) error {
 	// set up a database connection
 	db, err := models.Open(cfg.PSQL)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer db.Close()
 
 	err = models.MigrateFS(db, migrations.FS, ".")
 	if err != nil {
-		panic(err)
+		fmt.Println("here")
+		return err
 	}
 
 	// set up services
@@ -177,13 +185,13 @@ func main() {
 		})
 	})
 
+	assetsHandler := http.FileServer(http.Dir("assets"))
+	r.Get("/assets/*", http.StripPrefix("/assets", assetsHandler).ServeHTTP)
+
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not foundicilious", http.StatusNotFound)
 	})
 
 	fmt.Println("Starting the server on: 3000...")
-	err = http.ListenAndServe(cfg.Server.Address, r)
-	if err != nil {
-		panic(err)
-	}
+	return http.ListenAndServe(cfg.Server.Address, r)
 }

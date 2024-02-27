@@ -43,7 +43,6 @@ func (g Galleries) Index(w http.ResponseWriter, r *http.Request) {
 			Title: gallery.Title,
 		})
 	}
-	fmt.Printf("%+v", data)
 	g.Templates.Index.Execute(w, r, data)
 }
 

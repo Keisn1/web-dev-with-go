@@ -304,11 +304,7 @@ SELECT id, title, user_id FROM galleries;
 #+end_src
 
 #+RESULTS:
-| id | title           | user_id |
-|----+-----------------+---------|
-|  1 | new title       |       1 |
-|  2 | gallery 1       |       1 |
-|  3 | gallergallery 1 |       1 |
+|---|
 
 *** by id
 #+begin_src sql
