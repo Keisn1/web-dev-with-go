@@ -183,6 +183,7 @@ func (g Galleries) galleryByID(w http.ResponseWriter, r *http.Request, opts ...g
 		http.Error(w, "Something went wrong", http.StatusInternalServerError)
 		return nil, err
 	}
+
 	// options, calling each and returning if there is an error.
 	for _, opt := range opts {
 		err = opt(w, r, gallery)

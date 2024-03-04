@@ -14,6 +14,7 @@
 | Role name     | Attributes                                                 |
 | baloo         | Superuser, Create role, Create DB, Replication, Bypass RLS |
 
+
 * List dbs
 #+begin_src sql
 \l
@@ -30,18 +31,14 @@
 | template1         | baloo | UTF8     | libc            | en_US.utf8 | en_US.utf8 |            |           | =c/baloo          |
 | baloo=CTc/baloo   |       |          |                 |            |            |            |           |                   |
 
+
 * List tables
 #+begin_src sql
 \dt
 #+end_src
 
 #+RESULTS:
-| List of relations |                  |       |       |
-|-------------------+------------------+-------+-------|
-| Schema            | Name             | Type  | Owner |
-| public            | goose_db_version | table | baloo |
-| public            | sessions         | table | baloo |
-| public            | users            | table | baloo |
+|---|
 
 * Users table
 ** Create User table
