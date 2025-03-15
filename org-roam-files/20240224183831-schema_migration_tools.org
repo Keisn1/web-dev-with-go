@@ -24,7 +24,6 @@ version TEXT UNIQUE
 - undo steps often provided via
   - separate file with a suffix to notate whether it is a migration or a rollback step
   - part of the migration file with special comments to notate which part is the migration, and which part is the rollback step
--
 * naming schema
 - 001-create_users.up.sql
 - 001-create_users.down.sql

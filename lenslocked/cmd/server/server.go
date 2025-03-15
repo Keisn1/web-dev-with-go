@@ -86,7 +86,6 @@ func run(cfg config) error {
 
 	err = models.MigrateFS(db, migrations.FS, ".")
 	if err != nil {
-		fmt.Println("here")
 		return err
 	}
 

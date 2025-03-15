@@ -16,6 +16,7 @@ type Gallery struct {
 	UserID int
 	Title  string
 }
+
 type GalleryService struct {
 	DB        *sql.DB
 	ImagesDir string
